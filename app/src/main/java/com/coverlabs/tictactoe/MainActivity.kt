@@ -1,5 +1,6 @@
 package com.coverlabs.tictactoe
 
+import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -7,6 +8,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
+import com.coverlabs.tictactoe.util.DialogUtils
+import com.google.android.gms.ads.AdRequest
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -20,6 +23,9 @@ class MainActivity : AppCompatActivity() {
         for (index in 0..mBoard.size - 1) {
             mBoard[index] = -1
         }
+
+        val adRequest = AdRequest.Builder().build()
+        adView.loadAd(adRequest)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -63,6 +69,20 @@ class MainActivity : AppCompatActivity() {
             val index: Int? = Point.getIndexByPoint(computerMove!!)
             val computerButton = getComputerButton(index)
             placeAMove(index, 1, computerButton)
+        }
+
+        if (isGameOver()) {
+            val positiveClick = DialogInterface.OnClickListener{ _, _ ->
+                restartGame()
+            }
+
+            if (hasPlayerWon(0)) {
+                DialogUtils.showDialog(this, getString(R.string.title_congrats), getString(R.string.label_you_win), positiveClick)
+            } else if (hasPlayerWon(1)) {
+                DialogUtils.showDialog(this, getString(R.string.title_oh_no), getString(R.string.label_you_lose), positiveClick)
+            } else {
+                DialogUtils.showDialog(this, getString(R.string.title_oh_no), getString(R.string.label_draw), positiveClick)
+            }
         }
     }
 
