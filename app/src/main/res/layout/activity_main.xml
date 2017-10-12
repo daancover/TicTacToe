@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.coverlabs.tictactoe.MainActivity">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/bt1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@android:color/transparent"
+            android:onClick="onButtonClick"
+            android:textSize="48sp"
+            app:layout_constraintBottom_toTopOf="@id/vw_horizontal_1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/vw_vertical_1"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/vw_vertical_1"
+            android:layout_width="4dp"
+            android:layout_height="0dp"
+            android:background="@android:color/background_dark"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/bt1"
+            app:layout_constraintRight_toLeftOf="@id/bt2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/bt2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@android:color/transparent"
+            android:onClick="onButtonClick"
+            android:textSize="48sp"
+            app:layout_constraintBottom_toTopOf="@id/vw_horizontal_1"
+            app:layout_constraintLeft_toRightOf="@id/vw_vertical_1"
+            app:layout_constraintRight_toLeftOf="@id/vw_vertical_2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/vw_vertical_2"
+            android:layout_width="4dp"
+            android:layout_height="0dp"
+            android:background="@android:color/background_dark"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/bt2"
+            app:layout_constraintRight_toLeftOf="@id/bt3"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/bt3"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@android:color/transparent"
+            android:onClick="onButtonClick"
+            android:textSize="48sp"
+            app:layout_constraintBottom_toTopOf="@id/vw_horizontal_1"
+            app:layout_constraintLeft_toRightOf="@id/vw_vertical_2"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/vw_horizontal_1"
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:background="@android:color/background_dark"
+            app:layout_constraintBottom_toTopOf="@id/bt4"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bt1" />
+
+        <Button
+            android:id="@+id/bt4"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@android:color/transparent"
+            android:onClick="onButtonClick"
+            android:textSize="48sp"
+            app:layout_constraintBottom_toTopOf="@id/vw_horizontal_2"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/vw_vertical_1"
+            app:layout_constraintTop_toBottomOf="@id/vw_horizontal_1" />
+
+        <Button
+            android:id="@+id/bt5"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@android:color/transparent"
+            android:onClick="onButtonClick"
+            android:textSize="48sp"
+            app:layout_constraintBottom_toTopOf="@id/vw_horizontal_2"
+            app:layout_constraintLeft_toRightOf="@id/vw_vertical_1"
+            app:layout_constraintRight_toLeftOf="@id/vw_vertical_2"
+            app:layout_constraintTop_toBottomOf="@id/vw_horizontal_1" />
+
+        <Button
+            android:id="@+id/bt6"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@android:color/transparent"
+            android:onClick="onButtonClick"
+            android:textSize="48sp"
+            app:layout_constraintBottom_toTopOf="@id/vw_horizontal_2"
+            app:layout_constraintLeft_toRightOf="@id/vw_vertical_2"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/vw_horizontal_1" />
+
+        <View
+            android:id="@+id/vw_horizontal_2"
+            android:layout_width="0dp"
+            android:layout_height="4dp"
+            android:background="@android:color/background_dark"
+            app:layout_constraintBottom_toTopOf="@id/bt7"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bt4" />
+
+        <Button
+            android:id="@+id/bt7"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@android:color/transparent"
+            android:onClick="onButtonClick"
+            android:textSize="48sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/vw_vertical_1"
+            app:layout_constraintTop_toBottomOf="@id/vw_horizontal_2" />
+
+        <Button
+            android:id="@+id/bt8"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@android:color/transparent"
+            android:onClick="onButtonClick"
+            android:textSize="48sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/vw_vertical_1"
+            app:layout_constraintRight_toLeftOf="@id/vw_vertical_2"
+            app:layout_constraintTop_toBottomOf="@id/vw_horizontal_2" />
+
+        <Button
+            android:id="@+id/bt9"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@android:color/transparent"
+            android:onClick="onButtonClick"
+            android:textSize="48sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/vw_vertical_2"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/vw_horizontal_2" />
+    </android.support.constraint.ConstraintLayout>
+</android.support.constraint.ConstraintLayout>
