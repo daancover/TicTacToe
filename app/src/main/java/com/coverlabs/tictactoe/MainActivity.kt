@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun makePlay(button: Button, buttonIndex: Int) {
+    private fun makePlay(button: Button, buttonIndex: Int) {
         placeAMove(buttonIndex - 1, 0, button)
 
         if (!isGameOver()) {
@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun restartGame() {
+    private fun restartGame() {
         restoreButton(bt1)
         restoreButton(bt2)
         restoreButton(bt3)
@@ -103,12 +103,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun restoreButton(button: Button) {
+    private fun restoreButton(button: Button) {
         button.isEnabled = true
         button.text = ""
     }
 
-    fun getComputerButton(index: Int?): Button {
+    private fun getComputerButton(index: Int?): Button {
         return when (index) {
             0 -> bt1
             1 -> bt2
@@ -123,11 +123,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun isGameOver(): Boolean {
+    private fun isGameOver(): Boolean {
         return hasPlayerWon(0) || hasPlayerWon(1) || noAvailableCells()
     }
 
-    fun hasPlayerWon(player: Int): Boolean {
+    private fun hasPlayerWon(player: Int): Boolean {
         var success = false
 
         if (mBoard[0] == player && mBoard[1] == player && mBoard[2] == player) { // Row 1
@@ -151,7 +151,7 @@ class MainActivity : AppCompatActivity() {
         return success
     }
 
-    fun noAvailableCells(): Boolean {
+    private fun noAvailableCells(): Boolean {
         for (index in 0..mBoard.size - 1) {
             if (mBoard[index] == -1) {
                 return false
@@ -161,7 +161,7 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    fun getAvailableCells(): List<Point> {
+    private fun getAvailableCells(): List<Point> {
         var points: MutableList<Point> = arrayListOf()
 
         if (mBoard[0] == -1) {
@@ -203,7 +203,7 @@ class MainActivity : AppCompatActivity() {
         return points
     }
 
-    fun placeAMove(index: Int?, player: Int, button: Button?): Boolean {
+    private fun placeAMove(index: Int?, player: Int, button: Button?): Boolean {
         if (mBoard[index!!] != -1) {
             return false
         }
@@ -225,7 +225,7 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    fun minimax(depth: Int, turn: Int): Int {
+    private fun minimax(depth: Int, turn: Int): Int {
         if (hasPlayerWon(0)) {
             return -1
         } else if (hasPlayerWon(1)) {

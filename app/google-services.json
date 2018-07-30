@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "920790477415",
+    "firebase_url": "https://tic-tac-toe-25163987.firebaseio.com",
+    "project_id": "tic-tac-toe-25163987",
+    "storage_bucket": "tic-tac-toe-25163987.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:920790477415:android:f2a35bf2f1fcf07e",
+        "android_client_info": {
+          "package_name": "com.coverlabs.tictactoe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "920790477415-u4ikvsap6aud0gr7jdihkk1bv00rsf41.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.coverlabs.tictactoe",
+            "certificate_hash": "f49f6f97f3449b45fd71912c475a887905aaacb1"
+          }
+        },
+        {
+          "client_id": "920790477415-upoc9qehjrk459nlavjknugcn3atrjat.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.coverlabs.tictactoe",
+            "certificate_hash": "6e57e91638531eacb4be06ac9ec80675e7b027c7"
+          }
+        },
+        {
+          "client_id": "920790477415-k6fcqg6on6jftq4if004uksdcd01su7p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNaXyeEWYd_UcH67h4EgU8sLAdhhbKMkw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "920790477415-k6fcqg6on6jftq4if004uksdcd01su7p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
