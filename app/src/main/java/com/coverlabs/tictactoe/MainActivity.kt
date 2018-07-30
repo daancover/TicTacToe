@@ -13,14 +13,14 @@ import com.google.android.gms.ads.AdRequest
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-    private val mBoard = Array(9, { -1 })
+    private val mBoard = Array(9) { -1 }
     private var computerMove: Point? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        for (index in 0..mBoard.size - 1) {
+        for (index in 0 until mBoard.size) {
             mBoard[index] = -1
         }
 
@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity() {
         restoreButton(bt8)
         restoreButton(bt9)
 
-        for (index in 0..mBoard.size - 1) {
+        for (index in 0 until mBoard.size) {
             mBoard[index] = -1
         }
     }
@@ -152,7 +152,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun noAvailableCells(): Boolean {
-        for (index in 0..mBoard.size - 1) {
+        for (index in 0 until mBoard.size) {
             if (mBoard[index] == -1) {
                 return false
             }
@@ -239,7 +239,7 @@ class MainActivity : AppCompatActivity() {
         var min: Int = Integer.MAX_VALUE
         var max: Int = Int.MIN_VALUE
 
-        for (i in 0..availableCells.size - 1) {
+        for (i in 0 until availableCells.size) {
             val point = availableCells.get(i)
 
             if (turn == 1) {
