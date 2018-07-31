@@ -13,8 +13,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_login.*
 
 
@@ -22,14 +26,11 @@ class LoginActivity : AppCompatActivity() {
 
     private val RC_SIGN_IN: Int = 101
 
-    private var mAuth: FirebaseAuth? = null
     private var mGoogleApiClient: GoogleApiClient? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
-        mAuth = FirebaseAuth.getInstance()
 
         // Configure Google Sign In
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -47,10 +48,10 @@ class LoginActivity : AppCompatActivity() {
     public override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = mAuth!!.currentUser
+        val currentUser = FirebaseAuth.getInstance().currentUser
 
-        currentUser?.let {
-            redirectToActivity()
+        currentUser?.let { user: FirebaseUser ->
+            checkUserRegistered(user.uid)
         }
     }
 
@@ -82,7 +83,7 @@ class LoginActivity : AppCompatActivity() {
                     val firebaseUser = FirebaseAuth.getInstance().currentUser
 
                     if (firebaseUser != null) {
-                        makePlayer(firebaseUser.uid)
+                        redirectToRegistration()
                     } else {
                         showErrorDialog()
                     }
@@ -104,7 +105,13 @@ class LoginActivity : AppCompatActivity() {
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
-    private fun redirectToActivity() {
+    private fun redirectToRegistration() {
+        val intent = Intent(this, NameActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun redirectToMain() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
@@ -127,37 +134,47 @@ class LoginActivity : AppCompatActivity() {
         alertDialog.show()
     }
 
-    private fun makePlayer(id: String) {
-        val player = Player(id, "Daniel", 0, 0, 0)
-
+    private fun checkUserRegistered(id: String) {
         if (isOnline()) {
             val database = FirebaseDatabase.getInstance()
-            val ref = database.getReference("players")
-            ref.child(id).setValue(player).addOnCompleteListener {
-                if (it.isSuccessful) {
-                    makePlayerMapper(player.id!!, player.name!!)
-                } else {
+            val ref = database.getReference("players").child(id)
+            ref.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val player = dataSnapshot.getValue(Player::class.java)
+
+                    if (player != null) {
+                        checkUserMapped(player.id!!, player.name!!)
+                    } else {
+                        redirectToRegistration()
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
                     showErrorDialog()
                 }
-            }
-        } else {
-            showErrorDialog()
+            })
         }
     }
 
-    private fun makePlayerMapper(id: String, name: String) {
+    private fun checkUserMapped(id: String, name: String) {
         if (isOnline()) {
             val database = FirebaseDatabase.getInstance()
-            val ref = database.getReference("playerMapper")
-            ref.child(name).setValue(id).addOnCompleteListener {
-                if (it.isSuccessful) {
-                    redirectToActivity()
-                } else {
+            val ref = database.getReference("playerMapper").child(name)
+            ref.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val mappedId = dataSnapshot.getValue(String::class.java)
+
+                    if (mappedId != null) {
+                        redirectToMain()
+                    } else {
+                        redirectToRegistration()
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
                     showErrorDialog()
                 }
-            }
-        } else {
-            showErrorDialog()
+            })
         }
     }
 }
