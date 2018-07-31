@@ -7,4 +7,9 @@
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_autorenew"/>
 
+    <item
+        android:id="@+id/menu_logoff"
+        android:title="@string/title_logoff"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_logoff"/>
 </menu>

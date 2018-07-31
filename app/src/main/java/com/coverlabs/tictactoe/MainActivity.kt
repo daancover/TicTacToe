@@ -1,6 +1,7 @@
 package com.coverlabs.tictactoe
 
 import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -10,15 +11,30 @@ import android.view.View
 import android.widget.Button
 import com.coverlabs.tictactoe.util.DialogUtils
 import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : AppCompatActivity() {
     private val mBoard = Array(9) { -1 }
     private var computerMove: Point? = null
 
+    private var mGoogleApiClient: GoogleApiClient? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Configure Google Sign In
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build()
+
+        mGoogleApiClient = GoogleApiClient.Builder(this).enableAutoManage(this, null).addApi(Auth.GOOGLE_SIGN_IN_API, gso).build()
 
         for (index in 0 until mBoard.size) {
             mBoard[index] = -1
@@ -39,9 +55,28 @@ class MainActivity : AppCompatActivity() {
                 restartGame()
                 return true
             }
+            R.id.menu_logoff -> {
+                logoff()
+                return true
+            }
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun logoff() {
+        FirebaseAuth.getInstance().signOut()
+
+        if (mGoogleApiClient!!.isConnected) {
+            Auth.GoogleSignInApi.signOut(mGoogleApiClient)
+            goToLogin()
+        }
+    }
+
+    private fun goToLogin() {
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
     }
 
     fun onButtonClick(view: View) {
@@ -72,7 +107,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (isGameOver()) {
-            val positiveClick = DialogInterface.OnClickListener{ _, _ ->
+            val positiveClick = DialogInterface.OnClickListener { _, _ ->
                 restartGame()
             }
 
@@ -208,7 +243,7 @@ class MainActivity : AppCompatActivity() {
             return false
         }
 
-        mBoard[index!!] = player
+        mBoard[index] = player
 
         if (button != null) {
             button.isEnabled = false
@@ -260,7 +295,7 @@ class MainActivity : AppCompatActivity() {
 
                 if (currentScore == 1) {
                     val index = Point.getIndexByPoint(point)
-                    mBoard[index!!] = -1
+                    mBoard[index] = -1
                     break
                 }
 
@@ -277,13 +312,13 @@ class MainActivity : AppCompatActivity() {
 
                 if (min == -1) {
                     val index = Point.getIndexByPoint(point)
-                    mBoard[index!!] = -1
+                    mBoard[index] = -1
                     break
                 }
             }
 
             var index = Point.getIndexByPoint(point)
-            mBoard[index!!] = -1
+            mBoard[index] = -1
         }
 
         return if (turn == 1) max else min

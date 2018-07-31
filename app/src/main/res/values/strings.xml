@@ -6,7 +6,9 @@
     <string name="label_draw">Draw!</string>
 
     <string name="title_restart_game">Restart game</string>
+    <string name="title_logoff">Log off</string>
     <string name="title_congrats">Congratulations!</string>
     <string name="title_oh_no">Oh no!</string>
+
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
 </resources>
