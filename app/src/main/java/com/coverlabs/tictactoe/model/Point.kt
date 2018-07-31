@@ -1,15 +1,10 @@
-package com.coverlabs.tictactoe
+package com.coverlabs.tictactoe.model
 
 /**
  * Created by Daniel on 12/10/2017.
  */
 
 class Point(var x: Int, var y: Int) {
-    init {
-        this.x = x
-        this.y = y
-    }
-
     companion object {
         private val pointHashMap = HashMap<Int, Point>()
 

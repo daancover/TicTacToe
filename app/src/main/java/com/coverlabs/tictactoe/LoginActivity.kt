@@ -1,19 +1,20 @@
 package com.coverlabs.tictactoe
 
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import com.coverlabs.tictactoe.model.Player
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_login.*
-import android.support.v4.app.ActivityCompat.startActivityForResult
-import android.support.v4.app.FragmentActivity
-
-
 
 
 class LoginActivity : AppCompatActivity() {
@@ -66,32 +67,31 @@ class LoginActivity : AppCompatActivity() {
                     fireBaseAuthWithGoogle(it!!)
                 }
             } else {
-                // Fail show message
+                showErrorDialog()
             }
         }
     }
 
     private fun fireBaseAuthWithGoogle(account: GoogleSignInAccount) {
-        //if (FirebaseUtils.isOnline(this) && FirebaseAuth.getInstance() != null) {
-        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-        FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener(this) { task ->
-            if (task.isSuccessful) {
-                // Sign in success, update UI with the signed-in user's information
-                val firebaseUser = FirebaseAuth.getInstance().currentUser
+        if (isOnline()) {
+            val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+            FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    val firebaseUser = FirebaseAuth.getInstance().currentUser
 
-                if (firebaseUser != null) {
-                    redirectToActivity()
+                    if (firebaseUser != null) {
+                        makePlayer(firebaseUser.uid)
+                    } else {
+                        showErrorDialog()
+                    }
                 } else {
-
+                    showErrorDialog()
                 }
-            } else {
-
             }
+        } else {
+            showErrorDialog()
         }
-        /*} else {
-            DialogUtils.hideProgressDialog()
-            DialogUtils.showSimpleDialog(this, getString(R.string.error_no_internet_connection))
-        }*/
     }
 
     private fun signIn() {
@@ -103,14 +103,60 @@ class LoginActivity : AppCompatActivity() {
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
-    /*private fun signIn() {
-        val signInIntent = mGoogleApiClient!!.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
-    }*/
-
     private fun redirectToActivity() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    private fun isOnline(): Boolean {
+        val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val netInfo = cm.activeNetworkInfo
+        return netInfo != null && netInfo.isConnectedOrConnecting
+    }
+
+    private fun showErrorDialog() {
+        val builder = AlertDialog.Builder(this)
+                .setTitle(getString(R.string.title_attention))
+                .setMessage(getString(R.string.label_error))
+                .setPositiveButton(getString(R.string.action_ok), null)
+
+        val alertDialog = builder.create()
+        alertDialog.setCancelable(true)
+        alertDialog.show()
+    }
+
+    private fun makePlayer(id: String) {
+        val player = Player(id, "Daniel", 0, 0, 0)
+
+        if (isOnline()) {
+            val database = FirebaseDatabase.getInstance()
+            val ref = database.getReference("players")
+            ref.child(id).setValue(player).addOnCompleteListener {
+                if (it.isSuccessful) {
+                    makePlayerMapper(player.id!!, player.name!!)
+                } else {
+                    showErrorDialog()
+                }
+            }
+        } else {
+            showErrorDialog()
+        }
+    }
+
+    private fun makePlayerMapper(id: String, name: String) {
+        if (isOnline()) {
+            val database = FirebaseDatabase.getInstance()
+            val ref = database.getReference("playerMapper")
+            ref.child(name).setValue(id).addOnCompleteListener {
+                if (it.isSuccessful) {
+                    redirectToActivity()
+                } else {
+                    showErrorDialog()
+                }
+            }
+        } else {
+            showErrorDialog()
+        }
     }
 }

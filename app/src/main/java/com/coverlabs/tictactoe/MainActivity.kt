@@ -9,6 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
+import com.coverlabs.tictactoe.model.Point
 import com.coverlabs.tictactoe.util.DialogUtils
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.auth.api.Auth
