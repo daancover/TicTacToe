@@ -83,7 +83,7 @@ class LoginActivity : AppCompatActivity() {
                     val firebaseUser = FirebaseAuth.getInstance().currentUser
 
                     if (firebaseUser != null) {
-                        redirectToRegistration()
+                        checkUserRegistered(firebaseUser.uid)
                     } else {
                         showErrorDialog()
                     }
@@ -164,7 +164,7 @@ class LoginActivity : AppCompatActivity() {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val mappedId = dataSnapshot.getValue(String::class.java)
 
-                    if (mappedId != null) {
+                    if (mappedId != null && mappedId == id) {
                         redirectToMain()
                     } else {
                         redirectToRegistration()
