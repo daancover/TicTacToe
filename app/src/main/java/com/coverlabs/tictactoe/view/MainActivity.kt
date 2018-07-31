@@ -1,15 +1,19 @@
 package com.coverlabs.tictactoe.view
 
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
+import android.net.ConnectivityManager
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import com.coverlabs.tictactoe.R
+import com.coverlabs.tictactoe.model.Player
 import com.coverlabs.tictactoe.model.Point
 import com.coverlabs.tictactoe.util.DialogUtils
 import com.google.android.gms.ads.AdRequest
@@ -17,6 +21,11 @@ import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -25,6 +34,7 @@ class MainActivity : AppCompatActivity() {
     private var computerMove: Point? = null
 
     private var mGoogleApiClient: GoogleApiClient? = null
+    private var mPlayer: Player? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +54,14 @@ class MainActivity : AppCompatActivity() {
 
         val adRequest = AdRequest.Builder().build()
         adView.loadAd(adRequest)
+
+        setSupportActionBar(toolbar)
+
+        val currentUser = FirebaseAuth.getInstance().currentUser
+
+        currentUser?.let { user: FirebaseUser ->
+            getUserInfo(user.uid)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -324,6 +342,46 @@ class MainActivity : AppCompatActivity() {
         }
 
         return if (turn == 1) max else min
+    }
+
+    private fun isOnline(): Boolean {
+        val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val netInfo = cm.activeNetworkInfo
+        return netInfo != null && netInfo.isConnectedOrConnecting
+    }
+
+    private fun showErrorDialog() {
+        val builder = AlertDialog.Builder(this)
+                .setTitle(getString(R.string.title_attention))
+                .setMessage(getString(R.string.label_error))
+                .setPositiveButton(getString(R.string.action_ok), null)
+
+        val alertDialog = builder.create()
+        alertDialog.setCancelable(true)
+        alertDialog.show()
+    }
+
+    private fun getUserInfo(id: String) {
+        if (isOnline()) {
+            val database = FirebaseDatabase.getInstance()
+            val ref = database.getReference("players").child(id)
+            ref.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val player = dataSnapshot.getValue(Player::class.java)
+
+                    if (player != null) {
+                        mPlayer = player
+                        supportActionBar?.title = mPlayer?.name
+                    } else {
+                        showErrorDialog()
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    showErrorDialog()
+                }
+            })
+        }
     }
 }
 
