@@ -1,4 +1,4 @@
-package com.coverlabs.tictactoe
+package com.coverlabs.tictactoe.view
 
 import android.content.Context
 import android.content.Intent
@@ -6,6 +6,7 @@ import android.net.ConnectivityManager
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import com.coverlabs.tictactoe.R
 import com.coverlabs.tictactoe.model.Player
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount

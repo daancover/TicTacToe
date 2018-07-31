@@ -1,4 +1,4 @@
-package com.coverlabs.tictactoe
+package com.coverlabs.tictactoe.view
 
 import android.content.DialogInterface
 import android.content.Intent
@@ -9,6 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
+import com.coverlabs.tictactoe.R
 import com.coverlabs.tictactoe.model.Point
 import com.coverlabs.tictactoe.util.DialogUtils
 import com.google.android.gms.ads.AdRequest
