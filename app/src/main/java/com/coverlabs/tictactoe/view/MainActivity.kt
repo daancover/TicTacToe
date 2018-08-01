@@ -51,6 +51,7 @@ class MainActivity : BaseActivity() {
         adView.loadAd(adRequest)
 
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val currentUser = FirebaseAuth.getInstance().currentUser
 
@@ -66,6 +67,10 @@ class MainActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                return true
+            }
             R.id.menu_restart -> {
                 restartGame()
                 return true

@@ -11,7 +11,7 @@ class GameModeActivity : BaseActivity() {
         setContentView(R.layout.activity_game_mode)
 
         btSinglePlayer.setOnClickListener {
-
+            redirectToActivity(MainActivity::class.java, false)
         }
     }
 }
