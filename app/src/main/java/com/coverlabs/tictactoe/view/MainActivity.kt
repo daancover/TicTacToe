@@ -1,13 +1,9 @@
 package com.coverlabs.tictactoe.view
 
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
-import android.net.ConnectivityManager
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -28,8 +24,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_main.*
 
-
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
     private val mBoard = Array(9) { -1 }
     private var computerMove: Point? = null
 
@@ -140,7 +135,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
 
     private fun restartGame() {
         restoreButton(bt1)
@@ -342,23 +336,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         return if (turn == 1) max else min
-    }
-
-    private fun isOnline(): Boolean {
-        val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val netInfo = cm.activeNetworkInfo
-        return netInfo != null && netInfo.isConnectedOrConnecting
-    }
-
-    private fun showErrorDialog() {
-        val builder = AlertDialog.Builder(this)
-                .setTitle(getString(R.string.title_attention))
-                .setMessage(getString(R.string.label_error))
-                .setPositiveButton(getString(R.string.action_ok), null)
-
-        val alertDialog = builder.create()
-        alertDialog.setCancelable(true)
-        alertDialog.show()
     }
 
     private fun getUserInfo(id: String) {

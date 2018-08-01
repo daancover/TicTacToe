@@ -1,11 +1,7 @@
 package com.coverlabs.tictactoe.view
 
-import android.content.Context
 import android.content.Intent
-import android.net.ConnectivityManager
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
 import com.coverlabs.tictactoe.R
 import com.coverlabs.tictactoe.model.Player
 import com.google.android.gms.auth.api.Auth
@@ -21,8 +17,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_login.*
 
-
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : BaseActivity() {
 
     private val RC_SIGN_IN: Int = 101
 
@@ -105,35 +100,6 @@ class LoginActivity : AppCompatActivity() {
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
-    private fun redirectToRegistration() {
-        val intent = Intent(this, NameActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
-
-    private fun redirectToMain() {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
-
-    private fun isOnline(): Boolean {
-        val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val netInfo = cm.activeNetworkInfo
-        return netInfo != null && netInfo.isConnectedOrConnecting
-    }
-
-    private fun showErrorDialog() {
-        val builder = AlertDialog.Builder(this)
-                .setTitle(getString(R.string.title_attention))
-                .setMessage(getString(R.string.label_error))
-                .setPositiveButton(getString(R.string.action_ok), null)
-
-        val alertDialog = builder.create()
-        alertDialog.setCancelable(true)
-        alertDialog.show()
-    }
-
     private fun checkUserRegistered(id: String) {
         if (isOnline()) {
             val database = FirebaseDatabase.getInstance()
@@ -145,7 +111,7 @@ class LoginActivity : AppCompatActivity() {
                     if (player != null) {
                         checkUserMapped(player.id!!, player.name!!)
                     } else {
-                        redirectToRegistration()
+                        redirectToActivity(NameActivity::class.java, false)
                     }
                 }
 
@@ -165,9 +131,9 @@ class LoginActivity : AppCompatActivity() {
                     val mappedId = dataSnapshot.getValue(String::class.java)
 
                     if (mappedId != null && mappedId == id) {
-                        redirectToMain()
+                        redirectToActivity(GameModeActivity::class.java, true)
                     } else {
-                        redirectToRegistration()
+                        redirectToActivity(NameActivity::class.java, false)
                     }
                 }
 
