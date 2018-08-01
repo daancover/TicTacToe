@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_restart"
-        android:icon="@drawable/ic_autorenew"
-        android:title="@string/title_restart_game"
+        android:id="@+id/menu_logoff"
+        android:icon="@drawable/ic_logoff"
+        android:title="@string/title_logoff"
         app:showAsAction="ifRoom" />
 </menu>

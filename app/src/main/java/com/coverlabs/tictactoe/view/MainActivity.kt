@@ -1,7 +1,6 @@
 package com.coverlabs.tictactoe.view
 
 import android.content.DialogInterface
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
@@ -13,9 +12,6 @@ import com.coverlabs.tictactoe.model.Player
 import com.coverlabs.tictactoe.model.Point
 import com.coverlabs.tictactoe.util.DialogUtils
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.auth.api.Auth
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
@@ -27,21 +23,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : BaseActivity() {
     private val mBoard = Array(9) { -1 }
     private var computerMove: Point? = null
-
-    private var mGoogleApiClient: GoogleApiClient? = null
     private var mPlayer: Player? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
-
-        // Configure Google Sign In
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build()
-
-        mGoogleApiClient = GoogleApiClient.Builder(this).enableAutoManage(this, null).addApi(Auth.GOOGLE_SIGN_IN_API, gso).build()
 
         for (index in 0 until mBoard.size) {
             mBoard[index] = -1
@@ -75,28 +62,9 @@ class MainActivity : BaseActivity() {
                 restartGame()
                 return true
             }
-            R.id.menu_logoff -> {
-                logoff()
-                return true
-            }
         }
 
         return super.onOptionsItemSelected(item)
-    }
-
-    private fun logoff() {
-        FirebaseAuth.getInstance().signOut()
-
-        if (mGoogleApiClient!!.isConnected) {
-            Auth.GoogleSignInApi.signOut(mGoogleApiClient)
-            goToLogin()
-        }
-    }
-
-    private fun goToLogin() {
-        val intent = Intent(this, LoginActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(intent)
     }
 
     fun onButtonClick(view: View) {
