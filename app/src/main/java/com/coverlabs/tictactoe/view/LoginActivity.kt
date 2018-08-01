@@ -7,7 +7,6 @@ import com.coverlabs.tictactoe.model.Player
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -25,16 +24,6 @@ class LoginActivity : BaseActivity() {
 
         btSignIn.setOnClickListener { _ ->
             signIn()
-        }
-    }
-
-    public override fun onStart() {
-        super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = FirebaseAuth.getInstance().currentUser
-
-        currentUser?.let { user: FirebaseUser ->
-            checkUserRegistered(user.uid)
         }
     }
 
