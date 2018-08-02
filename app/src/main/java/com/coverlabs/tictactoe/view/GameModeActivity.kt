@@ -17,6 +17,10 @@ class GameModeActivity : BaseActivity() {
         btSinglePlayer.setOnClickListener {
             redirectToActivity(MainActivity::class.java, false)
         }
+
+        btMultiplayer.setOnClickListener {
+            redirectToActivity(MultiplayerActivity::class.java, false)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
